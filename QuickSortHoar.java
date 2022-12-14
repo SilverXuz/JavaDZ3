@@ -1,11 +1,11 @@
 import java.util.Scanner;
 
 /**
- * QuickSort быстрая сортировка
+ * QuickSort быстрая сортировка(метод Хоара})
  */
 
 // Реализация быстрой сортировки
-public class QuickSort {
+public class QuickSortHoar {
 
     // Точка входа. Отвечает за последовательность алгоритма.
     public static void main(String[] args) {
@@ -48,56 +48,44 @@ public class QuickSort {
         }
     }
 
-    // Функция меняет элементы местами
-    static void swap(int[] arr, int i, int j) {
-        int temp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = temp;
-    }
+    public static void quickSort(int[] array, int low, int high) {
+        if (array.length == 0)
+            return; //завершить выполнение, если длина массива равна 0
 
-    /*
-     * Эта функция принимает последний элемент в качестве PIVOT,
-     * помещает этот элемент на свое место в массиве. А далее размещает элементы
-     * ниже PIVOT - слева, а выше - справа.
-     */
-    static int partition(int[] arr, int low, int high) {
+        if (low >= high)
+            return; //завершить выполнение если уже нечего делить
 
-        // PIVOT
-        int pivot = arr[high];
+        // выбрать опорный элемент
+        int middle = low + (high - low) / 2;
+        int opora = array[middle];
 
-        // Индекс меньшего элемента из найденных до сих пор позиций
-        int i = (low - 1);
-
-        for (int j = low; j <= high - 1; j++) {
-
-            // Если текущий элемент меньше чем PIVOT
-            if (arr[j] < pivot) {
-
-                // Увеличиваем индекс меньшего элемента
+        // разделить на подмассивы, который больше и меньше опорного элемента
+        int i = low, j = high;
+        while (i <= j) {
+            while (array[i] < opora) {
                 i++;
-                swap(arr, i, j);
+            }
+
+            while (array[j] > opora) {
+                j--;
+            }
+
+            //меняем местами
+            if (i <= j) {
+                int temp = array[i];
+                array[i] = array[j];
+                array[j] = temp;
+                i++;
+                j--;
             }
         }
-        swap(arr, i + 1, high);
-        return (i + 1);
-    }
 
-    /*
-     * Основная функция реализаующая быструю сортировку(рекурсия)
-     * arr[] --> Массив для сортировки
-     * low --> начальный index
-     * high --> конечный index
-     */
-    static void quickSort(int[] arr, int low, int high) {
-        if (low < high) {
+        // вызов рекурсии для сортировки левой и правой части
+        if (low < j)
+            quickSort(array, low, j);
 
-            // pi - PIVOT встает на своем место
-            int pi = partition(arr, low, high);
-
-            // Сортировка элементов до и после замены
-            quickSort(arr, low, pi - 1);
-            quickSort(arr, pi + 1, high);
-        }
+        if (high > i)
+            quickSort(array, i, high);
     }
 
     // Отвечает за вывод
@@ -107,4 +95,4 @@ public class QuickSort {
             System.out.print(arr[i] + " ");
         System.out.println();
     }
-}
+}    
